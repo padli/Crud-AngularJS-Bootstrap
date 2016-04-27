@@ -1,0 +1,144 @@
+<!doctype html>
+<html ng-app="crudapp">
+<head>
+<meta charset="UTF-8">
+<title>AngularJS and CRUD</title>
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
+</head>
+
+<body ng-controller="productController">
+
+  <div class="container">
+    <h2>CRUD angularjs & bootstrap</h2>
+      <table class="table">
+      <thead>
+        <tr>
+            <th>No</th>
+            <th>Nama</th>
+            <th>Umur</th>
+            <th>Lulusan</th>
+            <th>OPTIONS</th>
+        </tr>
+      </thead>
+      <tbody>
+              <tr ng-repeat="product in listData">
+                  <td>{{product.id = $index}}</td>
+                  <td>{{product.name}}</td>
+                  <td>{{product.umur}}</td>
+                  <td>{{product.lulusan}}</td>
+                  <td>
+                      <a href="#" ng-click="del(data.id)">DELETE</a>
+                      <a href="#" ng-click="selectEdit(data.id)">EDIT</a>
+                  </td>
+              </tr>
+      </tbody>
+    </table>
+
+
+
+    <h1>Tambah Data</h1>
+
+    <form name="commentForm" method="post">
+    <table cellpadding="5" cellspacing="5">
+
+    	<tr>
+        	<td style="margin-top:5px">Nama</td>
+            <td>
+            	<input type="text" class="form-control" style="margin-top:5px" ng-model="name">
+            </td>
+        </tr>
+    	<tr>
+        	<td style="margin-top:5px">Umur</td>
+            <td>
+            	<input type="text" class="form-control" style="margin-top:5px"ng-model="umur">
+            </td>
+        </tr>
+    	<tr>
+        	<td style="margin-top:5px">Lulusan</td>
+            <td>
+            	<input type="text" class="form-control" style="margin-top:5px"ng-model="lulusan">
+            </td>
+        </tr>
+    	<tr>
+        	<td>&nbsp;</td>
+            <td>
+                <a href="#" class="btn btn-success" value="Add" ng-click="add()" ><span class="glyphicon glyphicon-hand-left"></span> add</a>
+                <a href="#" class="btn btn-primary" value="Save" ng-click="edit()" ><span class="glyphicon glyphicon-hand-up"></span> add</a>
+			</td>
+        </tr>
+    </table>
+    </form>
+</div>
+	<script type="text/javascript">
+
+		<!-- Define crudapp as a Angular application. -->
+		var crudapp = angular.module('crudapp', []);
+
+		<!-- Application controller for the module. -->
+		crudapp.controller('productController', function($scope){
+
+			<!-- Populate table with products data -->
+			$scope.listData = [
+				{name:'Khoirul Padli', umur: 21, lulusan: 'Universitas Indonesia'},
+				{name:'Khoirul Padli', umur: 21,  lulusan: 'Universitas Indonesia'},
+				{name:'Khoirul Padli',umur: 21, lulusan: 'Universitas Indonesia'},
+				{name:'Khoirul Padli', umur: 21, lulusan: 'Universitas Indonesia'},
+				{name:'Khoirul Padli',umur: 21,  lulusan: 'Universitas Indonesia'}
+			];
+
+			<!-- Delete function -->
+			$scope.del = function(id){
+				var result = confirm('Are you sure?');
+				if (result===true){
+					var index = getSelectedIndex(id);
+					$scope.listData.splice(index, 1);
+				};
+			};
+
+			<!-- Edit and update row function -->
+			$scope.edit = function(){
+				var index = getSelectedIndex($scope.id);
+				$scope.listData[index].name = $scope.name;
+				$scope.listData[index].umur = $scope.umur;
+				$scope.listData[index].lulusan = $scope.lulusan;
+			};
+
+			<!-- Select the row of data and update the form function -->
+			$scope.selectEdit = function(id){
+				var index = getSelectedIndex(id);
+				var product = $scope.listData[index];
+				$scope.id = data.id;
+				$scope.name = data.name;
+				$scope.umur = data.umur;
+				$scope.lulusan = product.lulusan;
+			};
+
+			<!-- Add a new product function -->
+			$scope.add = function(id){
+				$scope.listProducts.push({
+					name:$scope.name,
+					umur:$scope.umur,
+					lulusan:$scope.lulusan,
+				});
+				<!-- Resets the form -->
+				$scope.name = '';
+				$scope.umur = '';
+				$scope.lulusan = '';
+			};
+
+			<!-- Function finds unique product data based on its id -->
+			function getSelectedIndex(id){
+				for(var i=0; i<$scope.listData.length; i++)
+					if($scope.listData[i].id==id)
+						return i;
+					return -1;
+			};
+
+		});
+    </script>
+
+</body>
+</html>
